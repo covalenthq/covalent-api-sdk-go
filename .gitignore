@@ -46,8 +46,6 @@ coverage.txt
 bin/
 
 # Go Module files #
-go.sum
-go.mod
 
 # Log files #
 *.log
