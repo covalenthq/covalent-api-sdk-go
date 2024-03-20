@@ -1,21 +1,62 @@
-# If you prefer the allow list template instead of the deny list, see community template:
-# https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
-#
-# Binaries for programs and plugins
+# Binaries and objects #
+#######################
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
-
-# Test binary, built with `go test -c`
 *.test
-
-# Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+*.o
+*.a
+*.obj
+*.swp
+*.lock
+*.DS_Store
+*.vscode
+# Compiled Object files, Static and Dynamic libs (Shared Objects) #
+*.o
+*.a
+*.so
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
+# Folders to ignore #
+#####################
+/vendor/
+/node_modules/
 
-# Go workspace file
-go.work
+# Dependency directories (remove the line below if you're using Go modules) #
+/Godeps/
+
+# Output of the Go coverage tool #
+coverage.txt
+
+# External tool configuration files #
+.idea/
+*.swp
+*.swo
+*.tmp
+*.swp
+*.swo
+.vscode/
+
+# Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736 #
+.glide/
+
+# Go build directory #
+bin/
+
+# Go Module files #
+go.sum
+go.mod
+
+# Log files #
+*.log
+
+# Microsoft Office temporary files #
+~$*
+
+# JetBrains IDEs #
+.idea/
+
+# Vscode #
+.vscode/
