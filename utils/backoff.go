@@ -15,9 +15,10 @@ type ExponentialBackoff struct {
 	APIKey     string
 	Debug      bool
 	MaxRetries int
+	UserAgent  string
 }
 
-func NewExponentialBackoff(apiKey string, debug bool, maxRetries int) *ExponentialBackoff {
+func NewExponentialBackoff(apiKey string, debug bool, maxRetries int, userAgent string) *ExponentialBackoff {
 	if maxRetries == 0 {
 		maxRetries = DefaultBackoffMaxRetries
 	}
@@ -26,6 +27,7 @@ func NewExponentialBackoff(apiKey string, debug bool, maxRetries int) *Exponenti
 		Debug:      debug,
 		MaxRetries: maxRetries,
 		RetryCount: 1,
+		UserAgent: userAgent,
 	}
 }
 
@@ -66,6 +68,8 @@ func (e *ExponentialBackoff) makeRequest(url string) (*http.Response, error) {
 		return nil, err
 	}
 	req.Header.Add("Authorization", "Bearer "+e.APIKey)
+	req.Header.Set("X-Requested-With", e.UserAgent)
+	
 	response, err := client.Do(req)
 	if err != nil {
 		return nil, err

@@ -932,6 +932,7 @@ func (s *xykServiceImpl) GetPools(chainName chains.Chain, dexName string, queryP
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -949,7 +950,7 @@ func (s *xykServiceImpl) GetPools(chainName chains.Chain, dexName string, queryP
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[PoolResponse]
@@ -1018,6 +1019,7 @@ func (s *xykServiceImpl) GetDexForPoolAddress(chainName chains.Chain, poolAddres
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1035,7 +1037,7 @@ func (s *xykServiceImpl) GetDexForPoolAddress(chainName chains.Chain, poolAddres
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[PoolToDexResponse]
@@ -1104,6 +1106,7 @@ func (s *xykServiceImpl) GetPoolByAddress(chainName chains.Chain, dexName string
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1121,7 +1124,7 @@ func (s *xykServiceImpl) GetPoolByAddress(chainName chains.Chain, dexName string
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[PoolByAddressResponse]
@@ -1206,6 +1209,7 @@ func (s *xykServiceImpl) GetPoolsForTokenAddress(chainName chains.Chain, tokenAd
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1223,7 +1227,7 @@ func (s *xykServiceImpl) GetPoolsForTokenAddress(chainName chains.Chain, tokenAd
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[PoolsDexDataResponse]
@@ -1292,6 +1296,7 @@ func (s *xykServiceImpl) GetAddressExchangeBalances(chainName chains.Chain, dexN
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1309,7 +1314,7 @@ func (s *xykServiceImpl) GetAddressExchangeBalances(chainName chains.Chain, dexN
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[AddressExchangeBalancesResponse]
@@ -1398,6 +1403,7 @@ func (s *xykServiceImpl) GetPoolsForWalletAddress(chainName chains.Chain, wallet
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1415,7 +1421,7 @@ func (s *xykServiceImpl) GetPoolsForWalletAddress(chainName chains.Chain, wallet
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[PoolsDexDataResponse]
@@ -1496,6 +1502,7 @@ func (s *xykServiceImpl) GetNetworkExchangeTokens(chainName chains.Chain, dexNam
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1513,7 +1520,7 @@ func (s *xykServiceImpl) GetNetworkExchangeTokens(chainName chains.Chain, dexNam
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NetworkExchangeTokensResponse]
@@ -1590,6 +1597,7 @@ func (s *xykServiceImpl) GetLpTokenView(chainName chains.Chain, dexName string, 
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1607,7 +1615,7 @@ func (s *xykServiceImpl) GetLpTokenView(chainName chains.Chain, dexName string, 
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NetworkExchangeTokenViewResponse]
@@ -1676,6 +1684,7 @@ func (s *xykServiceImpl) GetSupportedDEXes() (*utils.Response[SupportedDexesResp
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1693,7 +1702,7 @@ func (s *xykServiceImpl) GetSupportedDEXes() (*utils.Response[SupportedDexesResp
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[SupportedDexesResponse]
@@ -1774,6 +1783,7 @@ func (s *xykServiceImpl) GetSingleNetworkExchangeToken(chainName chains.Chain, d
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1791,7 +1801,7 @@ func (s *xykServiceImpl) GetSingleNetworkExchangeToken(chainName chains.Chain, d
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[SingleNetworkExchangeTokenResponse]
@@ -1860,6 +1870,7 @@ func (s *xykServiceImpl) GetTransactionsForAccountAddress(chainName chains.Chain
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1877,7 +1888,7 @@ func (s *xykServiceImpl) GetTransactionsForAccountAddress(chainName chains.Chain
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[TransactionsForAccountAddressResponse]
@@ -1958,6 +1969,7 @@ func (s *xykServiceImpl) GetTransactionsForTokenAddress(chainName chains.Chain, 
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1975,7 +1987,7 @@ func (s *xykServiceImpl) GetTransactionsForTokenAddress(chainName chains.Chain, 
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[TransactionsForTokenAddressResponse]
@@ -2056,6 +2068,7 @@ func (s *xykServiceImpl) GetTransactionsForExchange(chainName chains.Chain, dexN
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -2073,7 +2086,7 @@ func (s *xykServiceImpl) GetTransactionsForExchange(chainName chains.Chain, dexN
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[TransactionsForExchangeResponse]
@@ -2158,6 +2171,7 @@ func (s *xykServiceImpl) GetTransactionsForDex(chainName chains.Chain, dexName s
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -2175,7 +2189,7 @@ func (s *xykServiceImpl) GetTransactionsForDex(chainName chains.Chain, dexName s
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NetworkTransactionsResponse]
@@ -2244,6 +2258,7 @@ func (s *xykServiceImpl) GetEcosystemChartData(chainName chains.Chain, dexName s
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -2261,7 +2276,7 @@ func (s *xykServiceImpl) GetEcosystemChartData(chainName chains.Chain, dexName s
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[EcosystemChartDataResponse]
@@ -2330,6 +2345,7 @@ func (s *xykServiceImpl) GetHealthData(chainName chains.Chain, dexName string) (
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -2347,7 +2363,7 @@ func (s *xykServiceImpl) GetHealthData(chainName chains.Chain, dexName string) (
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[HealthDataResponse]

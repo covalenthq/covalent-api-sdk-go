@@ -162,6 +162,7 @@ func (s *pricingServiceImpl) GetTokenPrices(chainName chains.Chain, quoteCurrenc
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -179,7 +180,7 @@ func (s *pricingServiceImpl) GetTokenPrices(chainName chains.Chain, quoteCurrenc
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data Response[TokenPricesResponse]

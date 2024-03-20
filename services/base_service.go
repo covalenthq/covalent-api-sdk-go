@@ -458,6 +458,7 @@ func (s *baseServiceImpl) GetBlock(chainName chains.Chain, blockHeight string) (
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -475,7 +476,7 @@ func (s *baseServiceImpl) GetBlock(chainName chains.Chain, blockHeight string) (
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[BlockResponse]
@@ -544,6 +545,7 @@ func (s *baseServiceImpl) GetResolvedAddress(chainName chains.Chain, walletAddre
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -561,7 +563,7 @@ func (s *baseServiceImpl) GetResolvedAddress(chainName chains.Chain, walletAddre
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[ResolvedAddress]
@@ -650,7 +652,7 @@ func (s *baseServiceImpl) GetBlockHeights(chainName chains.Chain, startDate stri
 		var data utils.Response[BlockHeightsResponse]
 		for hasNext {
 
-			res, err := utils.PaginateEndpoint(apiURL, s.APIKey, params, page, s.Debug, s.ThreadCount)
+			res, err := utils.PaginateEndpoint(apiURL, s.APIKey, params, page, s.Debug, s.ThreadCount, utils.UserAgent)
 			if err != nil {
 				blockHeightsChannel <- BlockHeightsResult{Err: err}
 				hasNext = false
@@ -731,6 +733,7 @@ func (s *baseServiceImpl) GetBlockHeightsByPage(chainName chains.Chain, startDat
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -748,7 +751,7 @@ func (s *baseServiceImpl) GetBlockHeightsByPage(chainName chains.Chain, startDat
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[BlockHeightsResponse]
@@ -845,6 +848,7 @@ func (s *baseServiceImpl) GetLogs(chainName chains.Chain, queryParamOpts ...GetL
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -862,7 +866,7 @@ func (s *baseServiceImpl) GetLogs(chainName chains.Chain, queryParamOpts ...GetL
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[GetLogsResponse]
@@ -959,7 +963,7 @@ func (s *baseServiceImpl) GetLogEventsByAddress(chainName chains.Chain, contract
 		var data utils.Response[LogEventsByAddressResponse]
 		for hasNext {
 
-			res, err := utils.PaginateEndpoint(apiURL, s.APIKey, params, page, s.Debug, s.ThreadCount)
+			res, err := utils.PaginateEndpoint(apiURL, s.APIKey, params, page, s.Debug, s.ThreadCount, utils.UserAgent)
 			if err != nil {
 				logEventChannel <- LogEventResult{Err: err}
 				hasNext = false
@@ -1048,6 +1052,7 @@ func (s *baseServiceImpl) GetLogEventsByAddressByPage(chainName chains.Chain, co
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1065,7 +1070,7 @@ func (s *baseServiceImpl) GetLogEventsByAddressByPage(chainName chains.Chain, co
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[LogEventsByAddressResponse]
@@ -1166,7 +1171,7 @@ func (s *baseServiceImpl) GetLogEventsByTopicHash(chainName chains.Chain, topicH
 		var data utils.Response[LogEventsByTopicHashResponse]
 		for hasNext {
 
-			res, err := utils.PaginateEndpoint(apiURL, s.APIKey, params, page, s.Debug, s.ThreadCount)
+			res, err := utils.PaginateEndpoint(apiURL, s.APIKey, params, page, s.Debug, s.ThreadCount, utils.UserAgent)
 			if err != nil {
 				logEventChannel <- LogEventResult{Err: err}
 				hasNext = false
@@ -1259,6 +1264,7 @@ func (s *baseServiceImpl) GetLogEventsByTopicHashByPage(chainName chains.Chain, 
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1276,7 +1282,7 @@ func (s *baseServiceImpl) GetLogEventsByTopicHashByPage(chainName chains.Chain, 
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[LogEventsByTopicHashResponse]
@@ -1345,6 +1351,7 @@ func (s *baseServiceImpl) GetAllChains() (*utils.Response[AllChainsResponse], er
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1362,7 +1369,7 @@ func (s *baseServiceImpl) GetAllChains() (*utils.Response[AllChainsResponse], er
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[AllChainsResponse]
@@ -1431,6 +1438,7 @@ func (s *baseServiceImpl) GetAllChainStatus() (*utils.Response[AllChainsStatusRe
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1448,7 +1456,7 @@ func (s *baseServiceImpl) GetAllChainStatus() (*utils.Response[AllChainsStatusRe
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[AllChainsStatusResponse]
@@ -1525,6 +1533,7 @@ func (s *baseServiceImpl) GetAddressActivity(walletAddress string, queryParamOpt
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1542,7 +1551,7 @@ func (s *baseServiceImpl) GetAddressActivity(walletAddress string, queryParamOpt
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[ChainActivityResponse]
@@ -1619,6 +1628,7 @@ func (s *baseServiceImpl) GetGasPrices(chainName chains.Chain, eventType string,
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1636,7 +1646,7 @@ func (s *baseServiceImpl) GetGasPrices(chainName chains.Chain, eventType string,
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[GasPricesResponse]
