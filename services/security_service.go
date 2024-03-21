@@ -193,6 +193,7 @@ func (s *securityServiceImpl) GetApprovals(chainName chains.Chain, walletAddress
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -210,7 +211,7 @@ func (s *securityServiceImpl) GetApprovals(chainName chains.Chain, walletAddress
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[ApprovalsResponse]
@@ -279,6 +280,7 @@ func (s *securityServiceImpl) GetNftApprovals(chainName chains.Chain, walletAddr
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -296,7 +298,7 @@ func (s *securityServiceImpl) GetNftApprovals(chainName chains.Chain, walletAddr
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NftApprovalsResponse]

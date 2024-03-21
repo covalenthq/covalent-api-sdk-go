@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func PaginateEndpoint(urlStr, apiKey string, urlParams url.Values, page int, debug bool, threadCount int) (*http.Response, error) {
+func PaginateEndpoint(urlStr, apiKey string, urlParams url.Values, page int, debug bool, threadCount int, userAgent string) (*http.Response, error) {
 
 	parsedURL, err := url.Parse(urlStr)
 	if err != nil {
@@ -33,6 +33,7 @@ func PaginateEndpoint(urlStr, apiKey string, urlParams url.Values, page int, deb
 	}
 
 	req.Header.Set("Authorization", `Bearer `+apiKey)
+	req.Header.Set("X-Requested-With", userAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -40,7 +41,7 @@ func PaginateEndpoint(urlStr, apiKey string, urlParams url.Values, page int, deb
 		startTime = time.Now() // Initialize startTime with the current time
 	}
 
-	backoff := NewExponentialBackoff(apiKey, debug, 0)
+	backoff := NewExponentialBackoff(apiKey, debug, 0, userAgent)
 
 	// Perform the request
 	resp, err := client.Do(req)
@@ -61,7 +62,7 @@ func PaginateEndpoint(urlStr, apiKey string, urlParams url.Values, page int, deb
 	}
 }
 
-func PaginateEndpointUsingLinks(urlStr, apiKey string, urlParams url.Values, debug bool, threadCount int) (*http.Response, error) {
+func PaginateEndpointUsingLinks(urlStr, apiKey string, urlParams url.Values, debug bool, threadCount int, userAgent string) (*http.Response, error) {
 	parsedURL, err := url.Parse(urlStr)
 	if err != nil {
 		return nil, err
@@ -79,6 +80,7 @@ func PaginateEndpointUsingLinks(urlStr, apiKey string, urlParams url.Values, deb
 	}
 
 	req.Header.Set("Authorization", `Bearer `+apiKey)
+	req.Header.Set("X-Requested-With", userAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -86,7 +88,7 @@ func PaginateEndpointUsingLinks(urlStr, apiKey string, urlParams url.Values, deb
 		startTime = time.Now() // Initialize startTime with the current time
 	}
 
-	backoff := NewExponentialBackoff(apiKey, debug, 0)
+	backoff := NewExponentialBackoff(apiKey, debug, 0, userAgent)
 
 	// Perform the request
 	resp, err := client.Do(req)

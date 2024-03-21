@@ -587,7 +587,7 @@ func (s *nftServiceImpl) GetChainCollections(chainName chains.Chain, queryParamO
 		var data utils.Response[ChainCollectionResponse]
 		for hasNext {
 
-			res, err := utils.PaginateEndpoint(apiURL, s.APIKey, params, page, s.Debug, s.ThreadCount)
+			res, err := utils.PaginateEndpoint(apiURL, s.APIKey, params, page, s.Debug, s.ThreadCount, utils.UserAgent)
 			if err != nil {
 				chainCollectionItemChannel <- ChainCollectionItemResult{Err: err}
 				hasNext = false
@@ -672,6 +672,7 @@ func (s *nftServiceImpl) GetChainCollectionsByPage(chainName chains.Chain, query
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -689,7 +690,7 @@ func (s *nftServiceImpl) GetChainCollectionsByPage(chainName chains.Chain, query
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[ChainCollectionResponse]
@@ -774,6 +775,7 @@ func (s *nftServiceImpl) GetNftsForAddress(chainName chains.Chain, walletAddress
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -791,7 +793,7 @@ func (s *nftServiceImpl) GetNftsForAddress(chainName chains.Chain, walletAddress
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NftAddressBalanceNftResponse]
@@ -896,7 +898,7 @@ func (s *nftServiceImpl) GetTokenIdsForContractWithMetadata(chainName chains.Cha
 		var data utils.Response[NftMetadataResponse]
 		for hasNext {
 
-			res, err := utils.PaginateEndpoint(apiURL, s.APIKey, params, page, s.Debug, s.ThreadCount)
+			res, err := utils.PaginateEndpoint(apiURL, s.APIKey, params, page, s.Debug, s.ThreadCount, utils.UserAgent)
 			if err != nil {
 				nftTokenContractChannel <- NftTokenContractResult{Err: err}
 				hasNext = false
@@ -993,6 +995,7 @@ func (s *nftServiceImpl) GetTokenIdsForContractWithMetadataByPage(chainName chai
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1010,7 +1013,7 @@ func (s *nftServiceImpl) GetTokenIdsForContractWithMetadataByPage(chainName chai
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NftMetadataResponse]
@@ -1091,6 +1094,7 @@ func (s *nftServiceImpl) GetNftMetadataForGivenTokenIdForContract(chainName chai
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1108,7 +1112,7 @@ func (s *nftServiceImpl) GetNftMetadataForGivenTokenIdForContract(chainName chai
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NftMetadataResponse]
@@ -1185,6 +1189,7 @@ func (s *nftServiceImpl) GetNftTransactionsForContractTokenId(chainName chains.C
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1202,7 +1207,7 @@ func (s *nftServiceImpl) GetNftTransactionsForContractTokenId(chainName chains.C
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NftTransactionsResponse]
@@ -1271,6 +1276,7 @@ func (s *nftServiceImpl) GetTraitsForCollection(chainName chains.Chain, collecti
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1288,7 +1294,7 @@ func (s *nftServiceImpl) GetTraitsForCollection(chainName chains.Chain, collecti
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NftCollectionTraitsResponse]
@@ -1357,6 +1363,7 @@ func (s *nftServiceImpl) GetAttributesForTraitInCollection(chainName chains.Chai
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1374,7 +1381,7 @@ func (s *nftServiceImpl) GetAttributesForTraitInCollection(chainName chains.Chai
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NftCollectionAttributesForTraitResponse]
@@ -1443,6 +1450,7 @@ func (s *nftServiceImpl) GetCollectionTraitsSummary(chainName chains.Chain, coll
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1460,7 +1468,7 @@ func (s *nftServiceImpl) GetCollectionTraitsSummary(chainName chains.Chain, coll
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NftCollectionTraitSummaryResponse]
@@ -1541,6 +1549,7 @@ func (s *nftServiceImpl) CheckOwnershipInNft(chainName chains.Chain, walletAddre
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1558,7 +1567,7 @@ func (s *nftServiceImpl) CheckOwnershipInNft(chainName chains.Chain, walletAddre
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NftOwnershipForCollectionResponse]
@@ -1627,6 +1636,7 @@ func (s *nftServiceImpl) CheckOwnershipInNftForSpecificTokenId(chainName chains.
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1644,7 +1654,7 @@ func (s *nftServiceImpl) CheckOwnershipInNftForSpecificTokenId(chainName chains.
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NftOwnershipForCollectionResponse]
@@ -1725,6 +1735,7 @@ func (s *nftServiceImpl) GetNftMarketSaleCount(chainName chains.Chain, contractA
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1742,7 +1753,7 @@ func (s *nftServiceImpl) GetNftMarketSaleCount(chainName chains.Chain, contractA
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NftMarketSaleCountResponse]
@@ -1823,6 +1834,7 @@ func (s *nftServiceImpl) GetNftMarketVolume(chainName chains.Chain, contractAddr
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1840,7 +1852,7 @@ func (s *nftServiceImpl) GetNftMarketVolume(chainName chains.Chain, contractAddr
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NftMarketVolumeResponse]
@@ -1921,6 +1933,7 @@ func (s *nftServiceImpl) GetNftMarketFloorPrice(chainName chains.Chain, contract
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1938,7 +1951,7 @@ func (s *nftServiceImpl) GetNftMarketFloorPrice(chainName chains.Chain, contract
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[NftMarketFloorPriceResponse]

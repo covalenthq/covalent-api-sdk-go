@@ -17,7 +17,7 @@ func TestExponentialBackoff_BackOff(t *testing.T) {
 	defer server.Close()
 
 	// Create a new ExponentialBackoff instance for testing
-	backoff := utils.NewExponentialBackoff("API_KEY", true, 3)
+	backoff := utils.NewExponentialBackoff("API_KEY", true, 3, "")
 
 	// Call the BackOff method with the test server URL
 	response, err := backoff.BackOff(server.URL)
@@ -38,7 +38,7 @@ func TestExponentialBackoff_BackOffSuccess(t *testing.T) {
 	defer server.Close()
 
 	// Create a new ExponentialBackoff instance for testing
-	backoff := utils.NewExponentialBackoff("API_KEY", true, 3)
+	backoff := utils.NewExponentialBackoff("API_KEY", true, 3, "")
 
 	// Call the BackOff method with the test server URL
 	response, err := backoff.BackOff(server.URL)
@@ -59,7 +59,7 @@ func TestExponentialBackoff_BackOffMaxRetriesExceeded(t *testing.T) {
 	defer server.Close()
 
 	// Create a new ExponentialBackoff instance for testing
-	backoff := utils.NewExponentialBackoff("API_KEY", true, 5)
+	backoff := utils.NewExponentialBackoff("API_KEY", true, 5, "")
 
 	// Call the BackOff method with the test server URL
 	_, err := backoff.BackOff(server.URL)

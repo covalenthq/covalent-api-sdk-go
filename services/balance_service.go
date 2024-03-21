@@ -601,6 +601,7 @@ func (s *balanceServiceImpl) GetTokenBalancesForWalletAddress(chainName chains.C
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -618,7 +619,7 @@ func (s *balanceServiceImpl) GetTokenBalancesForWalletAddress(chainName chains.C
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[BalancesResponse]
@@ -699,6 +700,7 @@ func (s *balanceServiceImpl) GetHistoricalPortfolioForWalletAddress(chainName ch
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -716,7 +718,7 @@ func (s *balanceServiceImpl) GetHistoricalPortfolioForWalletAddress(chainName ch
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[PortfolioResponse]
@@ -821,7 +823,7 @@ func (s *balanceServiceImpl) GetErc20TransfersForWalletAddress(chainName chains.
 		var data utils.Response[Erc20TransfersResponse]
 		for hasNext {
 
-			res, err := utils.PaginateEndpoint(apiURL, s.APIKey, params, page, s.Debug, s.ThreadCount)
+			res, err := utils.PaginateEndpoint(apiURL, s.APIKey, params, page, s.Debug, s.ThreadCount, utils.UserAgent)
 			if err != nil {
 				blockTransactionWithContractTransfersChannel <- BlockTransactionWithContractTransfersResult{Err: err}
 				hasNext = false
@@ -918,6 +920,7 @@ func (s *balanceServiceImpl) GetErc20TransfersForWalletAddressByPage(chainName c
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -935,7 +938,7 @@ func (s *balanceServiceImpl) GetErc20TransfersForWalletAddressByPage(chainName c
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[Erc20TransfersResponse]
@@ -1032,7 +1035,7 @@ func (s *balanceServiceImpl) GetTokenHoldersV2ForTokenAddress(chainName chains.C
 		var data utils.Response[TokenHoldersResponse]
 		for hasNext {
 
-			res, err := utils.PaginateEndpoint(apiURL, s.APIKey, params, page, s.Debug, s.ThreadCount)
+			res, err := utils.PaginateEndpoint(apiURL, s.APIKey, params, page, s.Debug, s.ThreadCount, utils.UserAgent)
 			if err != nil {
 				tokenHolderChannel <- TokenHolderResult{Err: err}
 				hasNext = false
@@ -1121,6 +1124,7 @@ func (s *balanceServiceImpl) GetTokenHoldersV2ForTokenAddressByPage(chainName ch
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1138,7 +1142,7 @@ func (s *balanceServiceImpl) GetTokenHoldersV2ForTokenAddressByPage(chainName ch
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[TokenHoldersResponse]
@@ -1239,6 +1243,7 @@ func (s *balanceServiceImpl) GetHistoricalTokenBalancesForWalletAddress(chainNam
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1256,7 +1261,7 @@ func (s *balanceServiceImpl) GetHistoricalTokenBalancesForWalletAddress(chainNam
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[HistoricalBalancesResponse]
@@ -1337,6 +1342,7 @@ func (s *balanceServiceImpl) GetNativeTokenBalance(chainName chains.Chain, walle
 	}
 
 	req.Header.Set("Authorization", `Bearer `+s.APIKey)
+	req.Header.Set("X-Requested-With", utils.UserAgent)
 
 	var startTime time.Time // Declares startTime, initially set to zero value of time.Time
 
@@ -1354,7 +1360,7 @@ func (s *balanceServiceImpl) GetNativeTokenBalance(chainName chains.Chain, walle
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[TokenBalanceNativeResponse]
