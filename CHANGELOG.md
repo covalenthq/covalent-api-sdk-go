@@ -1,6 +1,6 @@
 # Changelog for Covalent API SDK for Golang
 
-## 0.0.2
+## 0.0.3
 
 ## What's Changed
 - chore: Update CHANGELOG.md
