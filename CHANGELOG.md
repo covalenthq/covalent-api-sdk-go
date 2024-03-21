@@ -1,5 +1,12 @@
 # Changelog for Covalent API SDK for Golang
 
+## 0.0.3
+
+## What's Changed
+- chore: Update CHANGELOG.md
+- feat: Add user agent metric
+- Update to v0.0.3
+
 ## 0.0.2
 
 ## What's Changed
