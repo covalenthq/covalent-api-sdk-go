@@ -1338,7 +1338,7 @@ func (s *transactionServiceImpl) GetTransaction(chainName chains.Chain, txHash s
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(clientKey, debugOutput, 0, utils.UserAgent)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[TransactionResponse]
@@ -1535,7 +1535,7 @@ func (s *transactionServiceImpl) GetAllTransactionsForAddressByPage(chainName ch
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(clientKey, debugOutput, 0, utils.UserAgent)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[RecentTransactionsResponse]
@@ -1641,7 +1641,7 @@ func (s *transactionServiceImpl) GetTransactionsForAddressV3(chainName chains.Ch
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(clientKey, debugOutput, 0, utils.UserAgent)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[TransactionsResponse]
@@ -1743,7 +1743,7 @@ func (s *transactionServiceImpl) GetTimeBucketTransactionsForAddress(chainName c
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(clientKey, debugOutput, 0, utils.UserAgent)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[TransactionsTimeBucketResponse]
@@ -1846,7 +1846,7 @@ func (s *transactionServiceImpl) GetTransactionsForBlock(chainName chains.Chain,
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(clientKey, debugOutput, 0, utils.UserAgent)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[TransactionsBlockResponse]
@@ -1948,7 +1948,7 @@ func (s *transactionServiceImpl) GetTransactionsForBlockHashByPage(chainName cha
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(clientKey, debugOutput, 0, utils.UserAgent)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[TransactionsBlockPageResponse]
@@ -2051,7 +2051,7 @@ func (s *transactionServiceImpl) GetTransactionsForBlockHash(chainName chains.Ch
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(clientKey, debugOutput, 0, utils.UserAgent)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[TransactionsBlockResponse]
@@ -2150,7 +2150,7 @@ func (s *transactionServiceImpl) GetTransactionSummary(chainName chains.Chain, w
 	defer resp.Body.Close()
 
 	utils.DebugOutput(resp.Request.URL.String(), resp.StatusCode, startTime)
-	backoff := utils.NewExponentialBackoff(clientKey, debugOutput, 0, utils.UserAgent)
+	backoff := utils.NewExponentialBackoff(s.APIKey, s.Debug, 0, utils.UserAgent)
 
 	// // Read the response body
 	var data utils.Response[TransactionsSummaryResponse]

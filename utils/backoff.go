@@ -27,7 +27,7 @@ func NewExponentialBackoff(apiKey string, debug bool, maxRetries int, userAgent 
 		Debug:      debug,
 		MaxRetries: maxRetries,
 		RetryCount: 1,
-		UserAgent: userAgent,
+		UserAgent:  userAgent,
 	}
 }
 
@@ -69,7 +69,7 @@ func (e *ExponentialBackoff) makeRequest(url string) (*http.Response, error) {
 	}
 	req.Header.Add("Authorization", "Bearer "+e.APIKey)
 	req.Header.Set("X-Requested-With", e.UserAgent)
-	
+
 	response, err := client.Do(req)
 	if err != nil {
 		return nil, err
