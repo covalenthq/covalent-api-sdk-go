@@ -3,6 +3,13 @@
 ## 0.0.2
 
 ## What's Changed
+- chore: Update CHANGELOG.md
+- feat: Add user agent metric
+- Update to v0.0.3
+
+## 0.0.2
+
+## What's Changed
 - fix: add go.mod file
 
 ## 0.0.1
