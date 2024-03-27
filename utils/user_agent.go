@@ -1,3 +1,3 @@
 package utils
 
-var UserAgent = "com.covalenthq.sdk.golang/0.0.4"
+var UserAgent = "com.covalenthq.sdk.golang/0.0.5"
