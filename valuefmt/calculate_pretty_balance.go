@@ -3,6 +3,7 @@ package valuefmt
 import (
 	"fmt"
 	"math/big"
+	"github.com/covalenthq/covalent-api-sdk-go/utils"
 )
 
 func CalculatePrettyBalance(value interface{}, decimals int, roundOff bool, precision int) string {
@@ -12,6 +13,8 @@ func CalculatePrettyBalance(value interface{}, decimals int, roundOff bool, prec
 		bigDecimalValue = new(big.Float).SetFloat64(v)
 	case int:
 		bigDecimalValue = new(big.Float).SetInt64(int64(v))
+	case utils.BigInt:
+		bigDecimalValue = new(big.Float).SetInt(v.Int)
 	default:
 		return "-1"
 	}

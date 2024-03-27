@@ -221,6 +221,66 @@ The `XykService` refers to the [Xy=k API endpoints](https://www.covalenthq.com/d
 - `GetEcosystemChartData()`: Get a 7d and 30d time-series chart of DEX activity. Includes volume and swap count.
 - `GetHealthData()`: Ping the health of xy=k endpoints to get the synced block height per chain.
 
+## Additional Helper Functions
+### calculate_pretty_balance
+The `CalculatePrettyBalance` function is designed to take up to 4 inputs: the `Balance` field obtained from the `TokenBalances` endpoint and the `ContractDecimals`. The function also includes two optional fields, `roundOff` and `precision`, to allow developers to round the unscaled balance to a certain decimal precision. The primary purpose of this function is to convert the scaled token balance (the balance parameter) into its unscaled, human-readable form. The scaled balance needs to be divided by 10^(contractDecimals) to remove the scaling factor.
+
+```go
+package main
+
+import (
+    "fmt"
+	"github.com/covalenthq/covalent-api-sdk-go/covalentclient"
+    "github.com/covalenthq/covalent-api-sdk-go/chains"
+	"github.com/covalenthq/covalent-api-sdk-go/valuefmt"
+)
+
+func main() {
+    var Client = covalentclient.CovalentClient("API_KEY")
+    resp, err := Client.BalanceService.GetTokenBalancesForWalletAddress(chains.EthMainnet, "demo.eth")
+	if err != nil {
+		fmt.Printf("error: %s", err)
+	} else {
+		if len(resp.Data.Items) != 0 {
+            // get first Balance
+			prettybalance := valuefmt.CalculatePrettyBalance(*resp.Data.Items[0].Balance, *resp.Data.Items[0].ContractDecimals, true, 0)
+			fmt.Println(prettybalance)
+		}
+	}
+}
+```
+### prettify_currency
+The `PrettifyCurrency` function refines the presentation of a monetary value, accepting a numerical amount and a fiat currency code as parameters (with USD as the default currency). It simplifies currency formatting for developers, ensuring visually polished representations of financial information in user interfaces for an enhanced user experience.
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/covalenthq/covalent-api-sdk-go/chains"
+	"github.com/covalenthq/covalent-api-sdk-go/covalentclient"
+	"github.com/covalenthq/covalent-api-sdk-go/quotes"
+	"github.com/covalenthq/covalent-api-sdk-go/valuefmt"
+)
+
+func main() {
+    var Client = covalentclient.CovalentClient("API_KEY")
+    resp, err := Client.BalanceService.GetTokenBalancesForWalletAddress(chains.EthMainnet, "demo.eth")
+	if err != nil {
+		fmt.Printf("error: %s", err)
+	} else {
+		if len(resp.Data.Items) != 0 {
+            // get first Balance
+			opts := valuefmt.NewCurrencyOptions();
+			opts.Currency = quotes.CAD
+			opts.Decimals = 5			
+			prettyCurrency := valuefmt.PrettifyCurrency(*resp.Data.Items[0].QuoteRate, opts)
+			fmt.Println(prettyCurrency)
+		}
+	}
+}
+```
+
 ## Built-in SDK Features
 ### Explaining Pagination Mechanism Within the SDK
 
