@@ -222,7 +222,7 @@ The `XykService` refers to the [Xy=k API endpoints](https://www.covalenthq.com/d
 - `GetHealthData()`: Ping the health of xy=k endpoints to get the synced block height per chain.
 
 ## Additional Helper Functions
-### calculate_pretty_balance
+### CalculatePrettyBalance
 The `CalculatePrettyBalance` function is designed to take up to 4 inputs: the `Balance` field obtained from the `TokenBalances` endpoint and the `ContractDecimals`. The function also includes two optional fields, `roundOff` and `precision`, to allow developers to round the unscaled balance to a certain decimal precision. The primary purpose of this function is to convert the scaled token balance (the balance parameter) into its unscaled, human-readable form. The scaled balance needs to be divided by 10^(contractDecimals) to remove the scaling factor.
 
 ```go
@@ -249,7 +249,7 @@ func main() {
 	}
 }
 ```
-### prettify_currency
+### PrettifyCurrency
 The `PrettifyCurrency` function refines the presentation of a monetary value, accepting a numerical amount and a fiat currency code as parameters (with USD as the default currency). It simplifies currency formatting for developers, ensuring visually polished representations of financial information in user interfaces for an enhanced user experience.
 
 ```go
