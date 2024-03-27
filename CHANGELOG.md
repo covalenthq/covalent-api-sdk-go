@@ -1,5 +1,12 @@
 # Changelog for Covalent API SDK for Golang
 
+## 0.0.5
+
+## What's Changed
+- chore: Update CHANGELOG.md
+- feat: Add value formatter helper functions
+- Update to v0.0.5
+
 ## 0.0.4
 
 ## What's Changed
