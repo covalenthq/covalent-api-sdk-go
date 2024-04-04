@@ -585,7 +585,7 @@ type PoolToken struct {
 	// Use the relevant `contract_address` to lookup prices, logos, token transfers, etc.
 	ContractAddress *string `json:"contract_address,omitempty"`
 	// A list of supported standard ERC interfaces, eg: `ERC20` and `ERC721`.
-	SupportsErc *bool `json:"supports_erc,omitempty"`
+	SupportsErc *[]string `json:"supports_erc,omitempty"`
 	// The contract logo URL.
 	LogoUrl *string `json:"logo_url,omitempty"`
 }
