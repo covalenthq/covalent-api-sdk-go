@@ -1,5 +1,12 @@
 # Changelog for Covalent API SDK for Golang
 
+## 0.0.6
+
+## What's Changed
+- chore: Update CHANGELOG.md
+- fix: SupportsErc type mismatch
+- Update to v0.0.6
+
 ## 0.0.5
 
 ## What's Changed
