@@ -46,6 +46,8 @@ type LogEvent struct {
 	SenderAddressLabel *string `json:"sender_address_label,omitempty"`
 	// The contract logo URL.
 	SenderLogoUrl *string `json:"sender_logo_url,omitempty"`
+	// A list of supported standard ERC interfaces, eg: `ERC20` and `ERC721`.
+	SupportsErc *[]string `json:"supports_erc,omitempty"`
 	// The address of the deployed UniswapV2 like factory contract for this DEX.
 	SenderFactoryAddress *string `json:"sender_factory_address,omitempty"`
 	// The log events in raw.
