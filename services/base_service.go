@@ -75,10 +75,26 @@ type BlockHeightsResponse struct {
 	Pagination genericmodels.Pagination `json:"pagination"`
 }
 type BlockHeights struct {
+	// The hash of the block.
+	BlockHash *string `json:"block_hash,omitempty"`
 	// The block signed timestamp in UTC.
 	SignedAt *time.Time `json:"signed_at,omitempty"`
 	// The block height.
 	Height *int `json:"height,omitempty"`
+	// The parent block hash.
+	BlockParentHash *string `json:"block_parent_hash,omitempty"`
+	// Extra data written to the block.
+	ExtraData *string `json:"extra_data,omitempty"`
+	// The address of the miner.
+	MinerAddress *string `json:"miner_address,omitempty"`
+	// The associated mining cost.
+	MiningCost *int64 `json:"mining_cost,omitempty"`
+	// The associated gas used.
+	GasUsed *int64 `json:"gas_used,omitempty"`
+	// The associated gas limit.
+	GasLimit *int64 `json:"gas_limit,omitempty"`
+	// The link to the related tx by block endpoint.
+	TransactionsLink *string `json:"transactions_link,omitempty"`
 }
 type GetLogsResponse struct {
 	// The timestamp when the response was generated. Useful to show data staleness to users.
