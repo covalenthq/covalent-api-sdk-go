@@ -1,5 +1,12 @@
 # Changelog for Covalent API SDK for Golang
 
+## 0.0.8
+
+## What's Changed
+- chore: Update CHANGELOG.md
+- feat: Add additional block height fields
+- Update to v0.0.8
+
 ## 0.0.7
 
 ## What's Changed
