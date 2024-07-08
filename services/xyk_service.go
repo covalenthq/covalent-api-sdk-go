@@ -764,9 +764,9 @@ type GetTransactionsForDexQueryParamOpts struct {
 	PageNumber *int `json:"pageNumber,omitempty"`
 }
 
-func NewXykServiceImpl(apiKey string, debug bool, threadCount int, isValidKey bool) XykService {
+func NewXykServiceImpl(baseURL string, apiKey string, debug bool, threadCount int, isValidKey bool) XykService {
 
-	return &xykServiceImpl{APIKey: apiKey, Debug: debug, ThreadCount: threadCount, IskeyValid: isValidKey}
+	return &xykServiceImpl{BaseURL: baseURL, APIKey: apiKey, Debug: debug, ThreadCount: threadCount, IskeyValid: isValidKey}
 }
 
 type XykService interface {
@@ -877,6 +877,7 @@ type XykService interface {
 }
 
 type xykServiceImpl struct {
+	BaseURL     string
 	APIKey      string
 	Debug       bool
 	ThreadCount int
@@ -885,7 +886,7 @@ type xykServiceImpl struct {
 
 func (s *xykServiceImpl) GetPools(chainName chains.Chain, dexName string, queryParamOpts ...GetPoolsQueryParamOpts) (*utils.Response[PoolResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/xy=k/%s/pools/", chainName, dexName)
+	apiURL := fmt.Sprintf("%s/v1/%v/xy=k/%s/pools/", s.BaseURL, chainName, dexName)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -988,7 +989,7 @@ func (s *xykServiceImpl) GetPools(chainName chains.Chain, dexName string, queryP
 
 func (s *xykServiceImpl) GetDexForPoolAddress(chainName chains.Chain, poolAddress string) (*utils.Response[PoolToDexResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/xy=k/address/%s/dex_name/", chainName, poolAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/xy=k/address/%s/dex_name/", s.BaseURL, chainName, poolAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1075,7 +1076,7 @@ func (s *xykServiceImpl) GetDexForPoolAddress(chainName chains.Chain, poolAddres
 
 func (s *xykServiceImpl) GetPoolByAddress(chainName chains.Chain, dexName string, poolAddress string) (*utils.Response[PoolByAddressResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/xy=k/%s/pools/address/%s/", chainName, dexName, poolAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/xy=k/%s/pools/address/%s/", s.BaseURL, chainName, dexName, poolAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1162,7 +1163,7 @@ func (s *xykServiceImpl) GetPoolByAddress(chainName chains.Chain, dexName string
 
 func (s *xykServiceImpl) GetPoolsForTokenAddress(chainName chains.Chain, tokenAddress string, page int, queryParamOpts ...GetPoolsForTokenAddressQueryParamOpts) (*utils.Response[PoolsDexDataResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/xy=k/tokens/address/%s/pools/page/%d/", chainName, tokenAddress, page)
+	apiURL := fmt.Sprintf("%s/v1/%v/xy=k/tokens/address/%s/pools/page/%d/", s.BaseURL, chainName, tokenAddress, page)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1265,7 +1266,7 @@ func (s *xykServiceImpl) GetPoolsForTokenAddress(chainName chains.Chain, tokenAd
 
 func (s *xykServiceImpl) GetAddressExchangeBalances(chainName chains.Chain, dexName string, accountAddress string) (*utils.Response[AddressExchangeBalancesResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/xy=k/%s/address/%s/balances/", chainName, dexName, accountAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/xy=k/%s/address/%s/balances/", s.BaseURL, chainName, dexName, accountAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1352,7 +1353,7 @@ func (s *xykServiceImpl) GetAddressExchangeBalances(chainName chains.Chain, dexN
 
 func (s *xykServiceImpl) GetPoolsForWalletAddress(chainName chains.Chain, walletAddress string, page int, queryParamOpts ...GetPoolsForWalletAddressQueryParamOpts) (*utils.Response[PoolsDexDataResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/xy=k/address/%s/pools/page/%d/", chainName, walletAddress, page)
+	apiURL := fmt.Sprintf("%s/v1/%v/xy=k/address/%s/pools/page/%d/", s.BaseURL, chainName, walletAddress, page)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1459,7 +1460,7 @@ func (s *xykServiceImpl) GetPoolsForWalletAddress(chainName chains.Chain, wallet
 
 func (s *xykServiceImpl) GetNetworkExchangeTokens(chainName chains.Chain, dexName string, queryParamOpts ...GetNetworkExchangeTokensQueryParamOpts) (*utils.Response[NetworkExchangeTokensResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/xy=k/%s/tokens/", chainName, dexName)
+	apiURL := fmt.Sprintf("%s/v1/%v/xy=k/%s/tokens/", s.BaseURL, chainName, dexName)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1558,7 +1559,7 @@ func (s *xykServiceImpl) GetNetworkExchangeTokens(chainName chains.Chain, dexNam
 
 func (s *xykServiceImpl) GetLpTokenView(chainName chains.Chain, dexName string, tokenAddress string, queryParamOpts ...GetLpTokenViewQueryParamOpts) (*utils.Response[NetworkExchangeTokenViewResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/xy=k/%s/tokens/address/%s/view/", chainName, dexName, tokenAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/xy=k/%s/tokens/address/%s/view/", s.BaseURL, chainName, dexName, tokenAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1653,7 +1654,7 @@ func (s *xykServiceImpl) GetLpTokenView(chainName chains.Chain, dexName string, 
 
 func (s *xykServiceImpl) GetSupportedDEXes() (*utils.Response[SupportedDexesResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/xy=k/supported_dexes/")
+	apiURL := fmt.Sprintf("%s/v1/xy=k/supported_dexes/", s.BaseURL)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1740,7 +1741,7 @@ func (s *xykServiceImpl) GetSupportedDEXes() (*utils.Response[SupportedDexesResp
 
 func (s *xykServiceImpl) GetSingleNetworkExchangeToken(chainName chains.Chain, dexName string, tokenAddress string, queryParamOpts ...GetSingleNetworkExchangeTokenQueryParamOpts) (*utils.Response[SingleNetworkExchangeTokenResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/xy=k/%s/tokens/address/%s/", chainName, dexName, tokenAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/xy=k/%s/tokens/address/%s/", s.BaseURL, chainName, dexName, tokenAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1839,7 +1840,7 @@ func (s *xykServiceImpl) GetSingleNetworkExchangeToken(chainName chains.Chain, d
 
 func (s *xykServiceImpl) GetTransactionsForAccountAddress(chainName chains.Chain, dexName string, accountAddress string) (*utils.Response[TransactionsForAccountAddressResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/xy=k/%s/address/%s/transactions/", chainName, dexName, accountAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/xy=k/%s/address/%s/transactions/", s.BaseURL, chainName, dexName, accountAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1926,7 +1927,7 @@ func (s *xykServiceImpl) GetTransactionsForAccountAddress(chainName chains.Chain
 
 func (s *xykServiceImpl) GetTransactionsForTokenAddress(chainName chains.Chain, dexName string, tokenAddress string, queryParamOpts ...GetTransactionsForTokenAddressQueryParamOpts) (*utils.Response[TransactionsForTokenAddressResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/xy=k/%s/tokens/address/%s/transactions/", chainName, dexName, tokenAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/xy=k/%s/tokens/address/%s/transactions/", s.BaseURL, chainName, dexName, tokenAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -2025,7 +2026,7 @@ func (s *xykServiceImpl) GetTransactionsForTokenAddress(chainName chains.Chain, 
 
 func (s *xykServiceImpl) GetTransactionsForExchange(chainName chains.Chain, dexName string, poolAddress string, queryParamOpts ...GetTransactionsForExchangeQueryParamOpts) (*utils.Response[TransactionsForExchangeResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/xy=k/%s/pools/address/%s/transactions/", chainName, dexName, poolAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/xy=k/%s/pools/address/%s/transactions/", s.BaseURL, chainName, dexName, poolAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -2124,7 +2125,7 @@ func (s *xykServiceImpl) GetTransactionsForExchange(chainName chains.Chain, dexN
 
 func (s *xykServiceImpl) GetTransactionsForDex(chainName chains.Chain, dexName string, queryParamOpts ...GetTransactionsForDexQueryParamOpts) (*utils.Response[NetworkTransactionsResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/xy=k/%s/transactions/", chainName, dexName)
+	apiURL := fmt.Sprintf("%s/v1/%v/xy=k/%s/transactions/", s.BaseURL, chainName, dexName)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -2227,7 +2228,7 @@ func (s *xykServiceImpl) GetTransactionsForDex(chainName chains.Chain, dexName s
 
 func (s *xykServiceImpl) GetEcosystemChartData(chainName chains.Chain, dexName string) (*utils.Response[EcosystemChartDataResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/xy=k/%s/ecosystem/", chainName, dexName)
+	apiURL := fmt.Sprintf("%s/v1/%v/xy=k/%s/ecosystem/", s.BaseURL, chainName, dexName)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -2314,7 +2315,7 @@ func (s *xykServiceImpl) GetEcosystemChartData(chainName chains.Chain, dexName s
 
 func (s *xykServiceImpl) GetHealthData(chainName chains.Chain, dexName string) (*utils.Response[HealthDataResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/xy=k/%s/health/", chainName, dexName)
+	apiURL := fmt.Sprintf("%s/v1/%v/xy=k/%s/health/", s.BaseURL, chainName, dexName)
 
 	if !s.IskeyValid {
 		errorCode := 401

@@ -352,9 +352,9 @@ type GetGasPricesQueryParamOpts struct {
 	QuoteCurrency *quotes.Quote `json:"quoteCurrency,omitempty"`
 }
 
-func NewBaseServiceImpl(apiKey string, debug bool, threadCount int, isValidKey bool) BaseService {
+func NewBaseServiceImpl(baseURL string, apiKey string, debug bool, threadCount int, isValidKey bool) BaseService {
 
-	return &baseServiceImpl{APIKey: apiKey, Debug: debug, ThreadCount: threadCount, IskeyValid: isValidKey}
+	return &baseServiceImpl{BaseURL: baseURL, APIKey: apiKey, Debug: debug, ThreadCount: threadCount, IskeyValid: isValidKey}
 }
 
 type BaseService interface {
@@ -437,6 +437,7 @@ type BaseService interface {
 }
 
 type baseServiceImpl struct {
+	BaseURL     string
 	APIKey      string
 	Debug       bool
 	ThreadCount int
@@ -445,7 +446,7 @@ type baseServiceImpl struct {
 
 func (s *baseServiceImpl) GetBlock(chainName chains.Chain, blockHeight string) (*utils.Response[BlockResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/block_v2/%s/", chainName, blockHeight)
+	apiURL := fmt.Sprintf("%s/v1/%v/block_v2/%s/", s.BaseURL, chainName, blockHeight)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -532,7 +533,7 @@ func (s *baseServiceImpl) GetBlock(chainName chains.Chain, blockHeight string) (
 
 func (s *baseServiceImpl) GetResolvedAddress(chainName chains.Chain, walletAddress string) (*utils.Response[ResolvedAddress], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/address/%s/resolve_address/", chainName, walletAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/address/%s/resolve_address/", s.BaseURL, chainName, walletAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -630,7 +631,7 @@ func (s *baseServiceImpl) GetBlockHeights(chainName chains.Chain, startDate stri
 			return
 		}
 
-		apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/block_v2/%s/%s/", chainName, startDate, endDate)
+		apiURL := fmt.Sprintf("%s/v1/%v/block_v2/%s/%s/", s.BaseURL, chainName, startDate, endDate)
 
 		// Parse the formatted URL
 		parsedURL, err := url.Parse(apiURL)
@@ -708,7 +709,7 @@ func (s *baseServiceImpl) GetBlockHeights(chainName chains.Chain, startDate stri
 }
 
 func (s *baseServiceImpl) GetBlockHeightsByPage(chainName chains.Chain, startDate string, endDate string, queryParamOpts ...GetBlockHeightsQueryParamOpts) (*utils.Response[BlockHeightsResponse], error) {
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/block_v2/%s/%s/", chainName, startDate, endDate)
+	apiURL := fmt.Sprintf("%s/v1/%v/block_v2/%s/%s/", s.BaseURL, chainName, startDate, endDate)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -807,7 +808,7 @@ func (s *baseServiceImpl) GetBlockHeightsByPage(chainName chains.Chain, startDat
 
 func (s *baseServiceImpl) GetLogs(chainName chains.Chain, queryParamOpts ...GetLogsQueryParamOpts) (*utils.Response[GetLogsResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/events/", chainName)
+	apiURL := fmt.Sprintf("%s/v1/%v/events/", s.BaseURL, chainName)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -933,7 +934,7 @@ func (s *baseServiceImpl) GetLogEventsByAddress(chainName chains.Chain, contract
 			return
 		}
 
-		apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/events/address/%s/", chainName, contractAddress)
+		apiURL := fmt.Sprintf("%s/v1/%v/events/address/%s/", s.BaseURL, chainName, contractAddress)
 
 		// Parse the formatted URL
 		parsedURL, err := url.Parse(apiURL)
@@ -1019,7 +1020,7 @@ func (s *baseServiceImpl) GetLogEventsByAddress(chainName chains.Chain, contract
 }
 
 func (s *baseServiceImpl) GetLogEventsByAddressByPage(chainName chains.Chain, contractAddress string, queryParamOpts ...GetLogEventsByAddressQueryParamOpts) (*utils.Response[LogEventsByAddressResponse], error) {
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/events/address/%s/", chainName, contractAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/events/address/%s/", s.BaseURL, chainName, contractAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1137,7 +1138,7 @@ func (s *baseServiceImpl) GetLogEventsByTopicHash(chainName chains.Chain, topicH
 			return
 		}
 
-		apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/events/topics/%s/", chainName, topicHash)
+		apiURL := fmt.Sprintf("%s/v1/%v/events/topics/%s/", s.BaseURL, chainName, topicHash)
 
 		// Parse the formatted URL
 		parsedURL, err := url.Parse(apiURL)
@@ -1227,7 +1228,7 @@ func (s *baseServiceImpl) GetLogEventsByTopicHash(chainName chains.Chain, topicH
 }
 
 func (s *baseServiceImpl) GetLogEventsByTopicHashByPage(chainName chains.Chain, topicHash string, queryParamOpts ...GetLogEventsByTopicHashQueryParamOpts) (*utils.Response[LogEventsByTopicHashResponse], error) {
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/events/topics/%s/", chainName, topicHash)
+	apiURL := fmt.Sprintf("%s/v1/%v/events/topics/%s/", s.BaseURL, chainName, topicHash)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1338,7 +1339,7 @@ func (s *baseServiceImpl) GetLogEventsByTopicHashByPage(chainName chains.Chain, 
 
 func (s *baseServiceImpl) GetAllChains() (*utils.Response[AllChainsResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/chains/")
+	apiURL := fmt.Sprintf("%s/v1/chains/", s.BaseURL)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1425,7 +1426,7 @@ func (s *baseServiceImpl) GetAllChains() (*utils.Response[AllChainsResponse], er
 
 func (s *baseServiceImpl) GetAllChainStatus() (*utils.Response[AllChainsStatusResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/chains/status/")
+	apiURL := fmt.Sprintf("%s/v1/chains/status/", s.BaseURL)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1512,7 +1513,7 @@ func (s *baseServiceImpl) GetAllChainStatus() (*utils.Response[AllChainsStatusRe
 
 func (s *baseServiceImpl) GetAddressActivity(walletAddress string, queryParamOpts ...GetAddressActivityQueryParamOpts) (*utils.Response[ChainActivityResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/address/%s/activity/", walletAddress)
+	apiURL := fmt.Sprintf("%s/v1/address/%s/activity/", s.BaseURL, walletAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1607,7 +1608,7 @@ func (s *baseServiceImpl) GetAddressActivity(walletAddress string, queryParamOpt
 
 func (s *baseServiceImpl) GetGasPrices(chainName chains.Chain, eventType string, queryParamOpts ...GetGasPricesQueryParamOpts) (*utils.Response[GasPricesResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/event/%s/gas_prices/", chainName, eventType)
+	apiURL := fmt.Sprintf("%s/v1/%v/event/%s/gas_prices/", s.BaseURL, chainName, eventType)
 
 	if !s.IskeyValid {
 		errorCode := 401

@@ -481,9 +481,9 @@ type GetNativeTokenBalanceQueryParamOpts struct {
 	BlockHeight *string `json:"blockHeight,omitempty"`
 }
 
-func NewBalanceServiceImpl(apiKey string, debug bool, threadCount int, isValidKey bool) BalanceService {
+func NewBalanceServiceImpl(baseURL string, apiKey string, debug bool, threadCount int, isValidKey bool) BalanceService {
 
-	return &balanceServiceImpl{APIKey: apiKey, Debug: debug, ThreadCount: threadCount, IskeyValid: isValidKey}
+	return &balanceServiceImpl{BaseURL: baseURL, APIKey: apiKey, Debug: debug, ThreadCount: threadCount, IskeyValid: isValidKey}
 }
 
 type BalanceService interface {
@@ -538,6 +538,7 @@ type BalanceService interface {
 }
 
 type balanceServiceImpl struct {
+	BaseURL     string
 	APIKey      string
 	Debug       bool
 	ThreadCount int
@@ -546,7 +547,7 @@ type balanceServiceImpl struct {
 
 func (s *balanceServiceImpl) GetTokenBalancesForWalletAddress(chainName chains.Chain, walletAddress string, queryParamOpts ...GetTokenBalancesForWalletAddressQueryParamOpts) (*utils.Response[BalancesResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/address/%s/balances_v2/", chainName, walletAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/address/%s/balances_v2/", s.BaseURL, chainName, walletAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -657,7 +658,7 @@ func (s *balanceServiceImpl) GetTokenBalancesForWalletAddress(chainName chains.C
 
 func (s *balanceServiceImpl) GetHistoricalPortfolioForWalletAddress(chainName chains.Chain, walletAddress string, queryParamOpts ...GetHistoricalPortfolioForWalletAddressQueryParamOpts) (*utils.Response[PortfolioResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/address/%s/portfolio_v2/", chainName, walletAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/address/%s/portfolio_v2/", s.BaseURL, chainName, walletAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -767,7 +768,7 @@ func (s *balanceServiceImpl) GetErc20TransfersForWalletAddress(chainName chains.
 			return
 		}
 
-		apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/address/%s/transfers_v2/", chainName, walletAddress)
+		apiURL := fmt.Sprintf("%s/v1/%v/address/%s/transfers_v2/", s.BaseURL, chainName, walletAddress)
 
 		// Parse the formatted URL
 		parsedURL, err := url.Parse(apiURL)
@@ -861,7 +862,7 @@ func (s *balanceServiceImpl) GetErc20TransfersForWalletAddress(chainName chains.
 }
 
 func (s *balanceServiceImpl) GetErc20TransfersForWalletAddressByPage(chainName chains.Chain, walletAddress string, queryParamOpts ...GetErc20TransfersForWalletAddressQueryParamOpts) (*utils.Response[Erc20TransfersResponse], error) {
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/address/%s/transfers_v2/", chainName, walletAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/address/%s/transfers_v2/", s.BaseURL, chainName, walletAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -987,7 +988,7 @@ func (s *balanceServiceImpl) GetTokenHoldersV2ForTokenAddress(chainName chains.C
 			return
 		}
 
-		apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/tokens/%s/token_holders_v2/", chainName, tokenAddress)
+		apiURL := fmt.Sprintf("%s/v1/%v/tokens/%s/token_holders_v2/", s.BaseURL, chainName, tokenAddress)
 
 		// Parse the formatted URL
 		parsedURL, err := url.Parse(apiURL)
@@ -1073,7 +1074,7 @@ func (s *balanceServiceImpl) GetTokenHoldersV2ForTokenAddress(chainName chains.C
 }
 
 func (s *balanceServiceImpl) GetTokenHoldersV2ForTokenAddressByPage(chainName chains.Chain, tokenAddress string, queryParamOpts ...GetTokenHoldersV2ForTokenAddressQueryParamOpts) (*utils.Response[TokenHoldersResponse], error) {
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/tokens/%s/token_holders_v2/", chainName, tokenAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/tokens/%s/token_holders_v2/", s.BaseURL, chainName, tokenAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1180,7 +1181,7 @@ func (s *balanceServiceImpl) GetTokenHoldersV2ForTokenAddressByPage(chainName ch
 
 func (s *balanceServiceImpl) GetHistoricalTokenBalancesForWalletAddress(chainName chains.Chain, walletAddress string, queryParamOpts ...GetHistoricalTokenBalancesForWalletAddressQueryParamOpts) (*utils.Response[HistoricalBalancesResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/address/%s/historical_balances/", chainName, walletAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/address/%s/historical_balances/", s.BaseURL, chainName, walletAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1299,7 +1300,7 @@ func (s *balanceServiceImpl) GetHistoricalTokenBalancesForWalletAddress(chainNam
 
 func (s *balanceServiceImpl) GetNativeTokenBalance(chainName chains.Chain, walletAddress string, queryParamOpts ...GetNativeTokenBalanceQueryParamOpts) (*utils.Response[TokenBalanceNativeResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/address/%s/balances_native/", chainName, walletAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/address/%s/balances_native/", s.BaseURL, chainName, walletAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401

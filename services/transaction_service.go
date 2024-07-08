@@ -1182,14 +1182,14 @@ type GetTransactionSummaryQueryParamOpts struct {
 	WithGas *bool `json:"withGas,omitempty"`
 }
 
-func NewTransactionServiceImpl(apiKey string, debug bool, threadCount int, isValidKey bool) TransactionService {
+func NewTransactionServiceImpl(baseURL string, apiKey string, debug bool, threadCount int, isValidKey bool) TransactionService {
 
 	clientKey = apiKey
 	debugOutput = debug
 	workerCount = threadCount
 	isKeyValid = isValidKey
 
-	return &transactionServiceImpl{APIKey: apiKey, Debug: debug, ThreadCount: threadCount, IskeyValid: isValidKey}
+	return &transactionServiceImpl{BaseURL: baseURL, APIKey: apiKey, Debug: debug, ThreadCount: threadCount, IskeyValid: isValidKey}
 }
 
 type TransactionService interface {
@@ -1253,6 +1253,7 @@ type TransactionService interface {
 }
 
 type transactionServiceImpl struct {
+	BaseURL     string
 	APIKey      string
 	Debug       bool
 	ThreadCount int
@@ -1261,7 +1262,7 @@ type transactionServiceImpl struct {
 
 func (s *transactionServiceImpl) GetTransaction(chainName chains.Chain, txHash string, queryParamOpts ...GetTransactionQueryParamOpts) (*utils.Response[TransactionResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/transaction_v2/%s/", chainName, txHash)
+	apiURL := fmt.Sprintf("%s/v1/%v/transaction_v2/%s/", s.BaseURL, chainName, txHash)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1387,7 +1388,7 @@ func (s *transactionServiceImpl) GetAllTransactionsForAddress(chainName chains.C
 			return
 		}
 
-		apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/address/%s/transactions_v3/", chainName, walletAddress)
+		apiURL := fmt.Sprintf("%s/v1/%v/address/%s/transactions_v3/", s.BaseURL, chainName, walletAddress)
 
 		// Parse the formatted URL
 		parsedURL, err := url.Parse(apiURL)
@@ -1466,7 +1467,7 @@ func (s *transactionServiceImpl) GetAllTransactionsForAddress(chainName chains.C
 }
 
 func (s *transactionServiceImpl) GetAllTransactionsForAddressByPage(chainName chains.Chain, walletAddress string, queryParamOpts ...GetAllTransactionsForAddressQueryParamOpts) (*utils.Response[RecentTransactionsResponse], error) {
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/address/%s/transactions_v3/", chainName, walletAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/address/%s/transactions_v3/", s.BaseURL, chainName, walletAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1572,7 +1573,7 @@ func (s *transactionServiceImpl) GetAllTransactionsForAddressByPage(chainName ch
 }
 
 func (s *transactionServiceImpl) GetTransactionsForAddressV3(chainName chains.Chain, walletAddress string, page int, queryParamOpts ...GetTransactionsForAddressV3QueryParamOpts) (*utils.Response[TransactionsResponse], error) {
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/address/%s/transactions_v3/page/%d/", chainName, walletAddress, page)
+	apiURL := fmt.Sprintf("%s/v1/%v/address/%s/transactions_v3/page/%d/", s.BaseURL, chainName, walletAddress, page)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1678,7 +1679,7 @@ func (s *transactionServiceImpl) GetTransactionsForAddressV3(chainName chains.Ch
 }
 
 func (s *transactionServiceImpl) GetTimeBucketTransactionsForAddress(chainName chains.Chain, walletAddress string, timeBucket int, queryParamOpts ...GetTimeBucketTransactionsForAddressQueryParamOpts) (*utils.Response[TransactionsTimeBucketResponse], error) {
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/bulk/transactions/%s/%d/", chainName, walletAddress, timeBucket)
+	apiURL := fmt.Sprintf("%s/v1/%v/bulk/transactions/%s/%d/", s.BaseURL, chainName, walletAddress, timeBucket)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1781,7 +1782,7 @@ func (s *transactionServiceImpl) GetTimeBucketTransactionsForAddress(chainName c
 
 func (s *transactionServiceImpl) GetTransactionsForBlock(chainName chains.Chain, blockHeight string, queryParamOpts ...GetTransactionsForBlockQueryParamOpts) (*utils.Response[TransactionsBlockResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/block/%s/transactions_v3/", chainName, blockHeight)
+	apiURL := fmt.Sprintf("%s/v1/%v/block/%s/transactions_v3/", s.BaseURL, chainName, blockHeight)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1883,7 +1884,7 @@ func (s *transactionServiceImpl) GetTransactionsForBlock(chainName chains.Chain,
 }
 
 func (s *transactionServiceImpl) GetTransactionsForBlockHashByPage(chainName chains.Chain, blockHash string, page int, queryParamOpts ...GetTransactionsForBlockHashByPageQueryParamOpts) (*utils.Response[TransactionsBlockPageResponse], error) {
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/block_hash/%s/transactions_v3/page/%d/", chainName, blockHash, page)
+	apiURL := fmt.Sprintf("%s/v1/%v/block_hash/%s/transactions_v3/page/%d/", s.BaseURL, chainName, blockHash, page)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1986,7 +1987,7 @@ func (s *transactionServiceImpl) GetTransactionsForBlockHashByPage(chainName cha
 
 func (s *transactionServiceImpl) GetTransactionsForBlockHash(chainName chains.Chain, blockHash string, queryParamOpts ...GetTransactionsForBlockHashQueryParamOpts) (*utils.Response[TransactionsBlockResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/block_hash/%s/transactions_v3/", chainName, blockHash)
+	apiURL := fmt.Sprintf("%s/v1/%v/block_hash/%s/transactions_v3/", s.BaseURL, chainName, blockHash)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -2089,7 +2090,7 @@ func (s *transactionServiceImpl) GetTransactionsForBlockHash(chainName chains.Ch
 
 func (s *transactionServiceImpl) GetTransactionSummary(chainName chains.Chain, walletAddress string, queryParamOpts ...GetTransactionSummaryQueryParamOpts) (*utils.Response[TransactionsSummaryResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/address/%s/transactions_summary/", chainName, walletAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/address/%s/transactions_summary/", s.BaseURL, chainName, walletAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401

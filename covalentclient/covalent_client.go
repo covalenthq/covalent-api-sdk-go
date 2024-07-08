@@ -10,6 +10,8 @@ type CovalentClientSettings struct {
 	Debug *bool `json:"debug,omitempty"`
 	//  The number of concurrent requests allowed.
 	ThreadCount *int `json:"thread_count,omitempty"`
+	// The base URL for the Covalent API
+	BaseURL string `json:"base_url,omitempty"`
 }
 
 type CovalentClientType struct {
@@ -31,6 +33,7 @@ func CovalentClient(apiKey string, settings ...CovalentClientSettings) *Covalent
 	client := &CovalentClientType{}
 	validator := utils.NewApiKeyValidator(apiKey)
 	isValidKey := validator.IsValidApiKey()
+	baseURL := "https://api.covalenthq.com"
 
 	if len(settings) == 0 {
 		client.Debug = defaultDebug
@@ -50,15 +53,19 @@ func CovalentClient(apiKey string, settings ...CovalentClientSettings) *Covalent
 		} else {
 			client.ThreadCount = *setting.ThreadCount
 		}
+
+		if setting.BaseURL != "" {
+			baseURL = setting.BaseURL
+		}
 	}
 
-	client.SecurityService = services.NewSecurityServiceImpl(apiKey, client.Debug, client.ThreadCount, isValidKey)
-	client.BalanceService = services.NewBalanceServiceImpl(apiKey, client.Debug, client.ThreadCount, isValidKey)
-	client.BaseService = services.NewBaseServiceImpl(apiKey, client.Debug, client.ThreadCount, isValidKey)
-	client.NftService = services.NewNftServiceImpl(apiKey, client.Debug, client.ThreadCount, isValidKey)
-	client.PricingService = services.NewPricingServiceImpl(apiKey, client.Debug, client.ThreadCount, isValidKey)
-	client.TransactionService = services.NewTransactionServiceImpl(apiKey, client.Debug, client.ThreadCount, isValidKey)
-	client.XykService = services.NewXykServiceImpl(apiKey, client.Debug, client.ThreadCount, isValidKey)
+	client.SecurityService = services.NewSecurityServiceImpl(baseURL, apiKey, client.Debug, client.ThreadCount, isValidKey)
+	client.BalanceService = services.NewBalanceServiceImpl(baseURL, apiKey, client.Debug, client.ThreadCount, isValidKey)
+	client.BaseService = services.NewBaseServiceImpl(baseURL, apiKey, client.Debug, client.ThreadCount, isValidKey)
+	client.NftService = services.NewNftServiceImpl(baseURL, apiKey, client.Debug, client.ThreadCount, isValidKey)
+	client.PricingService = services.NewPricingServiceImpl(baseURL, apiKey, client.Debug, client.ThreadCount, isValidKey)
+	client.TransactionService = services.NewTransactionServiceImpl(baseURL, apiKey, client.Debug, client.ThreadCount, isValidKey)
+	client.XykService = services.NewXykServiceImpl(baseURL, apiKey, client.Debug, client.ThreadCount, isValidKey)
 
 	return client
 

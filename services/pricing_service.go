@@ -91,9 +91,9 @@ type Response[T any] struct {
 	ErrorMessage *string `json:"error_message"`
 }
 
-func NewPricingServiceImpl(apiKey string, debug bool, threadCount int, isValidKey bool) PricingService {
+func NewPricingServiceImpl(baseURL string, apiKey string, debug bool, threadCount int, isValidKey bool) PricingService {
 
-	return &pricingServiceImpl{APIKey: apiKey, Debug: debug, ThreadCount: threadCount, IskeyValid: isValidKey}
+	return &pricingServiceImpl{BaseURL: baseURL, APIKey: apiKey, Debug: debug, ThreadCount: threadCount, IskeyValid: isValidKey}
 }
 
 type PricingService interface {
@@ -107,6 +107,7 @@ type PricingService interface {
 }
 
 type pricingServiceImpl struct {
+	BaseURL     string
 	APIKey      string
 	Debug       bool
 	ThreadCount int
@@ -115,7 +116,7 @@ type pricingServiceImpl struct {
 
 func (s *pricingServiceImpl) GetTokenPrices(chainName chains.Chain, quoteCurrency quotes.Quote, contractAddress string, queryParamOpts ...GetTokenPricesQueryParamOpts) (*Response[TokenPricesResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/pricing/historical_by_addresses_v2/%v/%v/%s/", chainName, quoteCurrency, contractAddress)
+	apiURL := fmt.Sprintf("%s/v1/pricing/historical_by_addresses_v2/%v/%v/%s/", s.BaseURL, chainName, quoteCurrency, contractAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401

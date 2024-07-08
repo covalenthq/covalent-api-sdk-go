@@ -133,9 +133,9 @@ type NftApprovalSpender struct {
 	Allowance *string `json:"allowance,omitempty"`
 }
 
-func NewSecurityServiceImpl(apiKey string, debug bool, threadCount int, isValidKey bool) SecurityService {
+func NewSecurityServiceImpl(baseURL string, apiKey string, debug bool, threadCount int, isValidKey bool) SecurityService {
 
-	return &securityServiceImpl{APIKey: apiKey, Debug: debug, ThreadCount: threadCount, IskeyValid: isValidKey}
+	return &securityServiceImpl{BaseURL: baseURL, APIKey: apiKey, Debug: debug, ThreadCount: threadCount, IskeyValid: isValidKey}
 }
 
 type SecurityService interface {
@@ -154,6 +154,7 @@ type SecurityService interface {
 }
 
 type securityServiceImpl struct {
+	BaseURL     string
 	APIKey      string
 	Debug       bool
 	ThreadCount int
@@ -162,7 +163,7 @@ type securityServiceImpl struct {
 
 func (s *securityServiceImpl) GetApprovals(chainName chains.Chain, walletAddress string) (*utils.Response[ApprovalsResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/approvals/%s/", chainName, walletAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/approvals/%s/", s.BaseURL, chainName, walletAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -249,7 +250,7 @@ func (s *securityServiceImpl) GetApprovals(chainName chains.Chain, walletAddress
 
 func (s *securityServiceImpl) GetNftApprovals(chainName chains.Chain, walletAddress string) (*utils.Response[NftApprovalsResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/nft/approvals/%s/", chainName, walletAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/nft/approvals/%s/", s.BaseURL, chainName, walletAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401

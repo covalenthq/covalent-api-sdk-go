@@ -421,9 +421,9 @@ type GetNftMarketFloorPriceQueryParamOpts struct {
 	QuoteCurrency *quotes.Quote `json:"quoteCurrency,omitempty"`
 }
 
-func NewNftServiceImpl(apiKey string, debug bool, threadCount int, isValidKey bool) NftService {
+func NewNftServiceImpl(baseURL string, apiKey string, debug bool, threadCount int, isValidKey bool) NftService {
 
-	return &nftServiceImpl{APIKey: apiKey, Debug: debug, ThreadCount: threadCount, IskeyValid: isValidKey}
+	return &nftServiceImpl{BaseURL: baseURL, APIKey: apiKey, Debug: debug, ThreadCount: threadCount, IskeyValid: isValidKey}
 }
 
 type NftService interface {
@@ -524,6 +524,7 @@ type NftService interface {
 }
 
 type nftServiceImpl struct {
+	BaseURL     string
 	APIKey      string
 	Debug       bool
 	ThreadCount int
@@ -543,7 +544,7 @@ func (s *nftServiceImpl) GetChainCollections(chainName chains.Chain, queryParamO
 			return
 		}
 
-		apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/nft/collections/", chainName)
+		apiURL := fmt.Sprintf("%s/v1/%v/nft/collections/", s.BaseURL, chainName)
 
 		// Parse the formatted URL
 		parsedURL, err := url.Parse(apiURL)
@@ -625,7 +626,7 @@ func (s *nftServiceImpl) GetChainCollections(chainName chains.Chain, queryParamO
 }
 
 func (s *nftServiceImpl) GetChainCollectionsByPage(chainName chains.Chain, queryParamOpts ...GetChainCollectionsQueryParamOpts) (*utils.Response[ChainCollectionResponse], error) {
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/nft/collections/", chainName)
+	apiURL := fmt.Sprintf("%s/v1/%v/nft/collections/", s.BaseURL, chainName)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -728,7 +729,7 @@ func (s *nftServiceImpl) GetChainCollectionsByPage(chainName chains.Chain, query
 
 func (s *nftServiceImpl) GetNftsForAddress(chainName chains.Chain, walletAddress string, queryParamOpts ...GetNftsForAddressQueryParamOpts) (*utils.Response[NftAddressBalanceNftResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/address/%s/balances_nft/", chainName, walletAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/address/%s/balances_nft/", s.BaseURL, chainName, walletAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -842,7 +843,7 @@ func (s *nftServiceImpl) GetTokenIdsForContractWithMetadata(chainName chains.Cha
 			return
 		}
 
-		apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/nft/%s/metadata/", chainName, contractAddress)
+		apiURL := fmt.Sprintf("%s/v1/%v/nft/%s/metadata/", s.BaseURL, chainName, contractAddress)
 
 		// Parse the formatted URL
 		parsedURL, err := url.Parse(apiURL)
@@ -936,7 +937,7 @@ func (s *nftServiceImpl) GetTokenIdsForContractWithMetadata(chainName chains.Cha
 }
 
 func (s *nftServiceImpl) GetTokenIdsForContractWithMetadataByPage(chainName chains.Chain, contractAddress string, queryParamOpts ...GetTokenIdsForContractWithMetadataQueryParamOpts) (*utils.Response[NftMetadataResponse], error) {
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/nft/%s/metadata/", chainName, contractAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/nft/%s/metadata/", s.BaseURL, chainName, contractAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1051,7 +1052,7 @@ func (s *nftServiceImpl) GetTokenIdsForContractWithMetadataByPage(chainName chai
 
 func (s *nftServiceImpl) GetNftMetadataForGivenTokenIdForContract(chainName chains.Chain, contractAddress string, tokenId string, queryParamOpts ...GetNftMetadataForGivenTokenIdForContractQueryParamOpts) (*utils.Response[NftMetadataResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/nft/%s/metadata/%s/", chainName, contractAddress, tokenId)
+	apiURL := fmt.Sprintf("%s/v1/%v/nft/%s/metadata/%s/", s.BaseURL, chainName, contractAddress, tokenId)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1150,7 +1151,7 @@ func (s *nftServiceImpl) GetNftMetadataForGivenTokenIdForContract(chainName chai
 
 func (s *nftServiceImpl) GetNftTransactionsForContractTokenId(chainName chains.Chain, contractAddress string, tokenId string, queryParamOpts ...GetNftTransactionsForContractTokenIdQueryParamOpts) (*utils.Response[NftTransactionsResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/tokens/%s/nft_transactions/%s/", chainName, contractAddress, tokenId)
+	apiURL := fmt.Sprintf("%s/v1/%v/tokens/%s/nft_transactions/%s/", s.BaseURL, chainName, contractAddress, tokenId)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1245,7 +1246,7 @@ func (s *nftServiceImpl) GetNftTransactionsForContractTokenId(chainName chains.C
 
 func (s *nftServiceImpl) GetTraitsForCollection(chainName chains.Chain, collectionContract string) (*utils.Response[NftCollectionTraitsResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/nft/%s/traits/", chainName, collectionContract)
+	apiURL := fmt.Sprintf("%s/v1/%v/nft/%s/traits/", s.BaseURL, chainName, collectionContract)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1332,7 +1333,7 @@ func (s *nftServiceImpl) GetTraitsForCollection(chainName chains.Chain, collecti
 
 func (s *nftServiceImpl) GetAttributesForTraitInCollection(chainName chains.Chain, collectionContract string, trait string) (*utils.Response[NftCollectionAttributesForTraitResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/nft/%s/traits/%s/attributes/", chainName, collectionContract, trait)
+	apiURL := fmt.Sprintf("%s/v1/%v/nft/%s/traits/%s/attributes/", s.BaseURL, chainName, collectionContract, trait)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1419,7 +1420,7 @@ func (s *nftServiceImpl) GetAttributesForTraitInCollection(chainName chains.Chai
 
 func (s *nftServiceImpl) GetCollectionTraitsSummary(chainName chains.Chain, collectionContract string) (*utils.Response[NftCollectionTraitSummaryResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/nft/%s/traits_summary/", chainName, collectionContract)
+	apiURL := fmt.Sprintf("%s/v1/%v/nft/%s/traits_summary/", s.BaseURL, chainName, collectionContract)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1506,7 +1507,7 @@ func (s *nftServiceImpl) GetCollectionTraitsSummary(chainName chains.Chain, coll
 
 func (s *nftServiceImpl) CheckOwnershipInNft(chainName chains.Chain, walletAddress string, collectionContract string, queryParamOpts ...CheckOwnershipInNftQueryParamOpts) (*utils.Response[NftOwnershipForCollectionResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/address/%s/collection/%s/", chainName, walletAddress, collectionContract)
+	apiURL := fmt.Sprintf("%s/v1/%v/address/%s/collection/%s/", s.BaseURL, chainName, walletAddress, collectionContract)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1605,7 +1606,7 @@ func (s *nftServiceImpl) CheckOwnershipInNft(chainName chains.Chain, walletAddre
 
 func (s *nftServiceImpl) CheckOwnershipInNftForSpecificTokenId(chainName chains.Chain, walletAddress string, collectionContract string, tokenId string) (*utils.Response[NftOwnershipForCollectionResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/address/%s/collection/%s/token/%s/", chainName, walletAddress, collectionContract, tokenId)
+	apiURL := fmt.Sprintf("%s/v1/%v/address/%s/collection/%s/token/%s/", s.BaseURL, chainName, walletAddress, collectionContract, tokenId)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1692,7 +1693,7 @@ func (s *nftServiceImpl) CheckOwnershipInNftForSpecificTokenId(chainName chains.
 
 func (s *nftServiceImpl) GetNftMarketSaleCount(chainName chains.Chain, contractAddress string, queryParamOpts ...GetNftMarketSaleCountQueryParamOpts) (*utils.Response[NftMarketSaleCountResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/nft_market/%s/sale_count/", chainName, contractAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/nft_market/%s/sale_count/", s.BaseURL, chainName, contractAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1791,7 +1792,7 @@ func (s *nftServiceImpl) GetNftMarketSaleCount(chainName chains.Chain, contractA
 
 func (s *nftServiceImpl) GetNftMarketVolume(chainName chains.Chain, contractAddress string, queryParamOpts ...GetNftMarketVolumeQueryParamOpts) (*utils.Response[NftMarketVolumeResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/nft_market/%s/volume/", chainName, contractAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/nft_market/%s/volume/", s.BaseURL, chainName, contractAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
@@ -1890,7 +1891,7 @@ func (s *nftServiceImpl) GetNftMarketVolume(chainName chains.Chain, contractAddr
 
 func (s *nftServiceImpl) GetNftMarketFloorPrice(chainName chains.Chain, contractAddress string, queryParamOpts ...GetNftMarketFloorPriceQueryParamOpts) (*utils.Response[NftMarketFloorPriceResponse], error) {
 
-	apiURL := fmt.Sprintf("https://api.covalenthq.com/v1/%v/nft_market/%s/floor_price/", chainName, contractAddress)
+	apiURL := fmt.Sprintf("%s/v1/%v/nft_market/%s/floor_price/", s.BaseURL, chainName, contractAddress)
 
 	if !s.IskeyValid {
 		errorCode := 401
